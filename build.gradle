@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+
+subprojects {
+    group = 'pl.degath'
+    sourceCompatibility = '14'
+
+    repositories {
+        mavenCentral()
+    }
+}
