@@ -26,7 +26,7 @@ public class SendMessageHandler implements CommandHandler<SendMessage> {
 
         var message = getMessage(command);
         mailSender.send(from(message));
-        messageRepository.deleteById(message.getUuid());
+        messageRepository.deleteById(message.getKey().getId());
     }
 
     private Message getMessage(SendMessage command) {
@@ -36,7 +36,7 @@ public class SendMessageHandler implements CommandHandler<SendMessage> {
 
     private SimpleMailMessage from(Message message) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(message.getEmail());
+        simpleMailMessage.setTo(message.getKey().getEmail());
         simpleMailMessage.setSubject(message.getTitle());
         simpleMailMessage.setText(message.getContent());
         return simpleMailMessage;

@@ -22,13 +22,12 @@ public class Validator {
     }
 
     private static boolean isValidEmailAddress(String email) {
-        boolean result = true;
         try {
             InternetAddress emailAddress = new InternetAddress(email);
             emailAddress.validate();
         } catch (AddressException ex) {
-            result = false;
+            return false;
         }
-        return result;
+        return true;
     }
 }
