@@ -1,4 +1,4 @@
-package pl.degath.application.inftrastructure;
+package pl.degath.application.infrastructure;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import java.util.List;
  * Custom configuration was provided to support keyspace creation if not exists.
  */
 @Configuration
-@EnableCassandraRepositories
+@EnableCassandraRepositories(basePackages = "pl.degath.message.port")
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     @Value("${cassandra.contactpoints}")

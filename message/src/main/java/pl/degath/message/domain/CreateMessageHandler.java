@@ -1,4 +1,4 @@
-package pl.degath.message;
+package pl.degath.message.domain;
 
 import pl.degath.message.command.CreateMessage;
 import pl.degath.message.infrastructure.CommandHandler;
@@ -8,11 +8,10 @@ import java.util.Objects;
 
 public class CreateMessageHandler implements CommandHandler<CreateMessage> {
 
-    private final static int fiveMinutesInSeconds = 300;
-    private final MessageRepository messageRepository;
+    private final MessageRepository repository;
 
-    public CreateMessageHandler(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    public CreateMessageHandler(MessageRepository repository) {
+        this.repository = Objects.requireNonNull(repository, "Repository has to be specified.");
     }
 
     @Override
@@ -20,10 +19,10 @@ public class CreateMessageHandler implements CommandHandler<CreateMessage> {
         Objects.requireNonNull(command, "Command has to be specified.");
 
         Message newMessage = createMessage(command);
-        messageRepository.insert(newMessage, fiveMinutesInSeconds);
+        repository.insert(newMessage);
     }
 
     private Message createMessage(CreateMessage command) {
-        return new Message(command.getEmail(), command.getTitle(), command.getContent(), command.getMagicNumber());
+        return new Message(command.getTitle(), command.getContent(), command.getEmail(), command.getMagicNumber());
     }
 }

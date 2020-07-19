@@ -5,14 +5,23 @@ plugins {
 }
 
 dependencies {
+    implementation project(':message')
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
+
+    //todo check why bump version into 3.0.0 blocks swagger-ui.html endpoint
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+    }
 }
