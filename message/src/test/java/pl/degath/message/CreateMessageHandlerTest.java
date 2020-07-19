@@ -26,7 +26,7 @@ class CreateMessageHandlerTest {
         Message output = getFirstMessage();
 
         assertThat(output).isNotNull();
-        assertThat(output.getEmail()).isEqualTo("valid@wp.pl");
+        assertThat(output.getKey().getEmail()).isEqualTo("test@wp.pl");
         assertThat(output.getTitle()).isEqualTo("Test title");
         assertThat(output.getContent()).isEqualTo("This is example test content.");
         assertThat(output.getMagicNumber()).isEqualTo(1337);

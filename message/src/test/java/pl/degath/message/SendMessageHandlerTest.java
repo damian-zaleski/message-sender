@@ -32,7 +32,7 @@ class SendMessageHandlerTest {
 
     @Test
     void shouldSendMessageWithCorrectCommand() {
-        var existingMessageUUID = existingMessage().getUuid();
+        var existingMessageUUID = existingMessage().getKey().getId();
         SendMessage command = new SendMessage(existingMessageUUID);
 
         handler.handle(command);
@@ -42,7 +42,7 @@ class SendMessageHandlerTest {
 
     @Test
     void shouldRemoveSentMessage() {
-        var existingMessageUUID = existingMessage().getUuid();
+        var existingMessageUUID = existingMessage().getKey().getId();
         SendMessage command = new SendMessage(existingMessageUUID);
 
         handler.handle(command);

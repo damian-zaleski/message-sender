@@ -2,13 +2,11 @@ package pl.degath.message;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import pl.degath.message.port.MessageRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryMessageRepository implements MessageRepository {
 
@@ -49,7 +47,7 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public <S extends Message> S insert(S entity) {
-        entities.put(entity.getUuid(), entity);
+        entities.put(entity.getKey().getId(), entity);
         return entity;
     }
 
@@ -60,7 +58,7 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public <S extends Message> S save(S entity) {
-        entities.put(entity.getUuid(), entity);
+        entities.put(entity.getKey().getId(), entity);
         return entity;
     }
 
@@ -97,5 +95,14 @@ public class InMemoryMessageRepository implements MessageRepository {
     @Override
     public void deleteAll() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Slice<Message> findByKeyEmail(String email, Pageable pageable) {
+        var a = entities.values()
+                .stream()
+                .filter(message -> message.getKey().getEmail().equals(email))
+                .collect(Collectors.toList());
+        return new SliceImpl<>(a, pageable, true);
     }
 }
