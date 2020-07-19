@@ -22,11 +22,10 @@ public class Message {
 
     public Message(String email, String title, String content, int magicNumber) {
         this.uuid = UUID.randomUUID();
-        //todo full email validation should be applied.
-        this.email = Validator.notBlank(email, "Message email is required. Cannot be blank.");
         this.title = Validator.notBlank(title, "Message title is required. Cannot be blank.");
         this.content = Validator.notBlank(content, "Message content is required. Cannot be blank.");
         this.magicNumber = magicNumber;
+        this.email = Validator.validEmail(email, "Message email is required. Has to be a valid email address.");
     }
 
     public UUID getUuid() {
