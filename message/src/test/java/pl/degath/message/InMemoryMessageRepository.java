@@ -29,7 +29,7 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public <S extends Message> List<S> saveAll(Iterable<S> entites) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -39,12 +39,12 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public List<Message> findAllById(Iterable<UUID> uuids) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Slice<Message> findAll(Pageable pageable) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -55,27 +55,28 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public <S extends Message> List<S> insert(Iterable<S> entities) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <S extends Message> S save(S entity) {
-        return null;
+        entities.put(entity.getUuid(), entity);
+        return entity;
     }
 
     @Override
     public Optional<Message> findById(UUID uuid) {
-        return Optional.empty();
+        return Optional.ofNullable(entities.get(uuid));
     }
 
     @Override
     public boolean existsById(UUID uuid) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long count() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -85,16 +86,16 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public void delete(Message entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteAll(Iterable<? extends Message> entities) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteAll() {
-
+        throw new UnsupportedOperationException();
     }
 }
