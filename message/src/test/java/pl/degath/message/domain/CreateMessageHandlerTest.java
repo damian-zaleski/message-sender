@@ -1,8 +1,13 @@
-package pl.degath.message;
+package pl.degath.message.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import pl.degath.message.MessageFixtures;
 import pl.degath.message.command.CreateMessage;
+import pl.degath.message.port.MessageByEmailInMemory;
+import pl.degath.message.port.MessageByMagicNumberInMemory;
+import pl.degath.message.port.MessageInMemory;
 import pl.degath.message.port.MessageRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +20,7 @@ class CreateMessageHandlerTest {
 
     @BeforeEach
     void setUp() {
-        repository = new InMemoryMessageRepository();
+        repository = new MessageInMemory(new MessageByEmailInMemory(), new MessageByMagicNumberInMemory());
         handler = new CreateMessageHandler(repository);
     }
 
@@ -24,9 +29,8 @@ class CreateMessageHandlerTest {
         handler.handle(MessageFixtures.createMessage());
 
         Message output = getFirstMessage();
-
         assertThat(output).isNotNull();
-        assertThat(output.getKey().getEmail()).isEqualTo("test@wp.pl");
+        assertThat(output.getEmail()).isEqualTo("test@wp.pl");
         assertThat(output.getTitle()).isEqualTo("Test title");
         assertThat(output.getContent()).isEqualTo("This is example test content.");
         assertThat(output.getMagicNumber()).isEqualTo(1337);

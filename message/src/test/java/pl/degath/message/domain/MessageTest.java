@@ -1,4 +1,4 @@
-package pl.degath.message;
+package pl.degath.message.domain;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,28 +13,28 @@ class MessageTest {
     @Test
     void cannotCreateMessageWithMissingEmail() {
         Throwable thrown = catchThrowable(() ->
-                new Message(null, "Valid title", "This is test content", 1337));
+                new Message("Valid title", "This is test content", null, 1337));
 
         assertThat(thrown)
                 .isInstanceOf(ValidationException.class)
-                .hasMessage("Message email is required. Cannot be blank.");
+                .hasMessage("Message email is required. Has to be a valid email address.");
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" ", "            "})
-    void cannotCreateMessageWithBlankEmail(String input) {
+    @ValueSource(strings = {" ", "            ", "@wp.pl", "test@", "test.pl"})
+    void cannotCreateMessageWithInvalidEmail(String input) {
         Throwable thrown = catchThrowable(() ->
-                new Message(input, "Valid title", "This is test content", 1337));
+                new Message("Valid title", "This is test content", input, 1337));
 
         assertThat(thrown)
                 .isInstanceOf(ValidationException.class)
-                .hasMessage("Message email is required. Cannot be blank.");
+                .hasMessage("Message email is required. Has to be a valid email address.");
     }
 
     @Test
     void cannotCreateMessageWithMissingTitle() {
         Throwable thrown = catchThrowable(() ->
-                new Message("valid@email.pl", null, "This is test content", 1337));
+                new Message(null, "This is test content", "valid@email.pl", 1337));
 
         assertThat(thrown)
                 .isInstanceOf(ValidationException.class)
@@ -45,7 +45,7 @@ class MessageTest {
     @ValueSource(strings = {" ", "            "})
     void cannotCreateMessageWithBlankTitle(String input) {
         Throwable thrown = catchThrowable(() ->
-                new Message("valid@email.pl", input, "This is test content", 1337));
+                new Message(input, "This is test content", "valid@email.pl", 1337));
 
         assertThat(thrown)
                 .isInstanceOf(ValidationException.class)
@@ -55,7 +55,7 @@ class MessageTest {
     @Test
     void cannotCreateMessageWithMissingContent() {
         Throwable thrown = catchThrowable(() ->
-                new Message("valid@email.pl", "This is a title.", null, 1337));
+                new Message("This is a title.", null, "valid@email.pl", 1337));
 
         assertThat(thrown)
                 .isInstanceOf(ValidationException.class)
@@ -66,7 +66,7 @@ class MessageTest {
     @ValueSource(strings = {" ", "            "})
     void cannotCreateMessageWithBlankContent(String input) {
         Throwable thrown = catchThrowable(() ->
-                new Message("valid@email.pl", "This is a title", input, 1337));
+                new Message("This is a title", input, "valid@email.pl", 1337));
 
         assertThat(thrown)
                 .isInstanceOf(ValidationException.class)

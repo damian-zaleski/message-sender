@@ -1,8 +1,12 @@
-package pl.degath.message;
+package pl.degath.message.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Slice;
+import pl.degath.message.MessageFixtures;
+import pl.degath.message.port.MessageByEmailInMemory;
+import pl.degath.message.port.MessageByMagicNumberInMemory;
+import pl.degath.message.port.MessageInMemory;
 import pl.degath.message.port.MessageRepository;
 import pl.degath.message.query.GetMessagesByEmail;
 
@@ -10,25 +14,24 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GetMessagesByEmailQueryHandlerTest {
+class GetMessagesByEmailHandlerTest {
 
-    private GetMessagesByEmailQueryHandler handler;
-    private MessageRepository messageRepository;
+    private GetMessagesByEmailHandler handler;
+    private MessageRepository repository;
 
     @BeforeEach
     void setUp() {
-        messageRepository = new InMemoryMessageRepository();
-        handler = new GetMessagesByEmailQueryHandler(messageRepository);
+        MessageByEmailInMemory byEmailRepository = new MessageByEmailInMemory();
+        repository = new MessageInMemory(byEmailRepository, new MessageByMagicNumberInMemory());
+        handler = new GetMessagesByEmailHandler(byEmailRepository);
     }
 
     @Test
     void shouldReturnSlicedMessagesWithMatchingEmail() {
         existingMessages(4);
-
         GetMessagesByEmail query = new GetMessagesByEmail("test@wp.pl", 0, 2);
 
-        Slice<Message> result = handler.handle(query);
-
+        Slice<MessageByEmail> result = handler.handle(query);
 
         assertThat(result.getSize()).isEqualTo(2);
         assertThat(result.getNumber()).isEqualTo(0);
@@ -37,13 +40,13 @@ class GetMessagesByEmailQueryHandlerTest {
 
     @Test
     void shouldReturnEmptyListWhenNoResults() {
-        Slice<Message> result = handler.handle(new GetMessagesByEmail("a", 0, 10));
+        Slice<MessageByEmail> result = handler.handle(new GetMessagesByEmail("test@wp.pl", 0, 10));
 
         assertThat(result).isEmpty();
     }
 
     private Message existingMessage() {
-        return messageRepository.insert(MessageFixtures.message());
+        return repository.insert(MessageFixtures.message());
     }
 
     void existingMessages(int messagesCount) {

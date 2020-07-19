@@ -1,28 +1,34 @@
-package pl.degath.message;
+package pl.degath.message.port;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
-import pl.degath.message.port.MessageRepository;
+import pl.degath.message.domain.Message;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class InMemoryMessageRepository implements MessageRepository {
+public class MessageInMemory implements MessageRepository {
 
     private final Map<UUID, Message> entities;
+    private final MessageByEmailInMemory byEmailInMemory;
+    private final MessageByMagicNumberInMemory byMagicNumberInMemory;
 
-    public InMemoryMessageRepository() {
+    public MessageInMemory(MessageByEmailInMemory byEmailInMemory, MessageByMagicNumberInMemory byMagicNumberInMemory) {
         this.entities = new HashMap<>();
+        this.byEmailInMemory = byEmailInMemory;
+        this.byMagicNumberInMemory = byMagicNumberInMemory;
     }
 
-    //todo consider how to make pseudo implementation which:
-    // allow us to test insertion part and doesn't take 5 mins
-    // ATM ttl part isn't implemented...
     @Override
-    public <S extends Message> S insert(S entity, int ttl) {
-        insert(entity);
+    public <S extends Message> S save(S entity) {
+        byEmailInMemory.save(entity.toMessageByEmail());
+        byMagicNumberInMemory.save(entity.toMessageByMagicNumber());
+        entities.put(entity.getMessageId(), entity);
         return entity;
+    }
+
+    @Override
+    public Message findByMessageId(UUID messageId) {
+        return entities.get(messageId);
     }
 
     @Override
@@ -47,8 +53,7 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public <S extends Message> S insert(S entity) {
-        entities.put(entity.getKey().getId(), entity);
-        return entity;
+        return save(entity);
     }
 
     @Override
@@ -57,14 +62,8 @@ public class InMemoryMessageRepository implements MessageRepository {
     }
 
     @Override
-    public <S extends Message> S save(S entity) {
-        entities.put(entity.getKey().getId(), entity);
-        return entity;
-    }
-
-    @Override
-    public Optional<Message> findById(UUID uuid) {
-        return Optional.ofNullable(entities.get(uuid));
+    public Optional<Message> findById(UUID messageId) {
+        return Optional.ofNullable(entities.get(messageId));
     }
 
     @Override
@@ -74,7 +73,7 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public long count() {
-        throw new UnsupportedOperationException();
+        return entities.size();
     }
 
     @Override
@@ -84,7 +83,9 @@ public class InMemoryMessageRepository implements MessageRepository {
 
     @Override
     public void delete(Message entity) {
-        throw new UnsupportedOperationException();
+        byEmailInMemory.delete(entity.toMessageByEmail());
+        byMagicNumberInMemory.delete(entity.toMessageByMagicNumber());
+        entities.remove(entity.getMessageId());
     }
 
     @Override
@@ -95,14 +96,5 @@ public class InMemoryMessageRepository implements MessageRepository {
     @Override
     public void deleteAll() {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Slice<Message> findByKeyEmail(String email, Pageable pageable) {
-        var a = entities.values()
-                .stream()
-                .filter(message -> message.getKey().getEmail().equals(email))
-                .collect(Collectors.toList());
-        return new SliceImpl<>(a, pageable, true);
     }
 }

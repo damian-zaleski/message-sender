@@ -1,16 +1,23 @@
-package pl.degath.message.command;
+package pl.degath.application.message.request;
 
-import pl.degath.message.infrastructure.Command;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.degath.message.command.CreateMessage;
 import pl.degath.message.infrastructure.Validator;
 
-public class CreateMessage implements Command {
+public class SaveMessageRequest {
 
     private final String email;
     private final String title;
     private final String content;
     private final int magicNumber;
 
-    public CreateMessage(String email, String title, String content, int magicNumber) {
+    @JsonCreator
+    public SaveMessageRequest(@JsonProperty("email") String email,
+                              @JsonProperty("title") String title,
+                              @JsonProperty("content") String content,
+                              @JsonProperty("magicNumber") int magicNumber) {
         this.email = Validator.validEmail(email, "Message email is required. Has to be a valid email address.");
         this.title = Validator.notBlank(title, "Message title is required. Cannot be blank.");
         this.content = Validator.notBlank(content, "Message content is required. Cannot be blank.");
@@ -31,5 +38,10 @@ public class CreateMessage implements Command {
 
     public int getMagicNumber() {
         return magicNumber;
+    }
+
+    @JsonIgnore
+    public CreateMessage toCommand() {
+        return new CreateMessage(email, title, content, magicNumber);
     }
 }

@@ -1,30 +1,27 @@
-package pl.degath.message;
+package pl.degath.message.domain;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 import pl.degath.message.infrastructure.Validator;
 
+import java.util.Objects;
+
 @Table
-public class Message {
+public class MessageByEmail {
 
     @PrimaryKey
-    private MessageKey key;
+    private MessageByEmailKey key;
     private String title;
     private String content;
-    private int magicNumber;
 
-    private Message() {
-        //required...
-    }
-
-    public Message(String email, String title, String content, int magicNumber) {
-        this.key = new MessageKey(email);
+    public MessageByEmail(MessageByEmailKey key, String title, String content) {
+        this.key = Objects.requireNonNull(key, "Key has to be specified. Cannot be null.");
         this.title = Validator.notBlank(title, "Message title is required. Cannot be blank.");
         this.content = Validator.notBlank(content, "Message content is required. Cannot be blank.");
-        this.magicNumber = magicNumber;
+
     }
 
-    public MessageKey getKey() {
+    public MessageByEmailKey getKey() {
         return key;
     }
 
@@ -36,7 +33,8 @@ public class Message {
         return content;
     }
 
-    public int getMagicNumber() {
-        return magicNumber;
+    public Message toMessage() {
+        return new Message(title, content, key.getEmail(), key.getMagicNumber());
     }
+
 }

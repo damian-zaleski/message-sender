@@ -1,12 +1,17 @@
 package pl.degath.application;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@Tag("requires-cassandra")
 class RecruitmentTaskAppTest {
-
     @Test
+    @DisplayName("Truly excessive test just to bump test coverage ^_^")
     void contextLoads() {
+        RecruitmentTaskApp.main(new String[]{});
     }
 }
