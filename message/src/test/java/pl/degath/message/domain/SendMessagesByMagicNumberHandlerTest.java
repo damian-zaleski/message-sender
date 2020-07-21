@@ -20,18 +20,17 @@ import static org.mockito.Mockito.times;
 
 class SendMessagesByMagicNumberHandlerTest {
 
-    private SendMessagesByMagicNumberHandler sendMessagesByMagicNumberHandler;
-    private MessageRepository repository;
     @Mock
     private JavaMailSender mailSender;
-    private SendMessageHandler sendMessageHandler;
+    private SendMessagesByMagicNumberHandler sendMessagesByMagicNumberHandler;
+    private MessageRepository repository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         var byMagicNumberInMemory = new MessageByMagicNumberInMemory();
         repository = new MessageInMemory(new MessageByEmailInMemory(), byMagicNumberInMemory);
-        sendMessageHandler = new SendMessageHandler(repository, mailSender);
+        SendMessageHandler sendMessageHandler = new SendMessageHandler(repository, mailSender);
         sendMessagesByMagicNumberHandler = new SendMessagesByMagicNumberHandler(byMagicNumberInMemory, sendMessageHandler);
     }
 

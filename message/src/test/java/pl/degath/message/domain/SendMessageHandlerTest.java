@@ -20,13 +20,14 @@ import static org.mockito.Mockito.times;
 
 class SendMessageHandlerTest {
 
-    private MessageRepository messageRepository = new MessageInMemory(new MessageByEmailInMemory(), new MessageByMagicNumberInMemory());
     @Mock
     private JavaMailSender mailSender;
-    SendMessageHandler handler;
+    private MessageRepository messageRepository;
+    private SendMessageHandler handler;
 
     @BeforeEach
     void setUp() {
+        messageRepository = new MessageInMemory(new MessageByEmailInMemory(), new MessageByMagicNumberInMemory());
         MockitoAnnotations.openMocks(this);
         handler = new SendMessageHandler(messageRepository, mailSender);
     }

@@ -7,9 +7,9 @@ import java.util.stream.IntStream;
 public class MessageBuilder {
 
     private final MessageRepository messageRepository;
-    private String title = "This is test title";
-    private String content = "this is test content";
-    private String email = "test@gmail.com";
+    private final String title = "This is test title";
+    private final String content = "this is test content";
+    private final String email = "test@gmail.com";
     private int magicNumber = 1337;
 
     public MessageBuilder(MessageRepository messageRepository) {
