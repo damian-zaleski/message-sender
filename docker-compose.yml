@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  cassandra-db:
+    network_mode: bridge
+    image: cassandra
+    ports:
+      - "9042:9042"
+  application:
+    network_mode: bridge
+    image: zaleskirekrutacja/acaisoft:latest
+    ports:
+      - "8080:8080"
+    restart: on-failure
