@@ -12,7 +12,10 @@ import pl.degath.application.message.request.SendMessagesRequest;
 import pl.degath.message.domain.Message;
 import pl.degath.message.port.MessageRepository;
 
+import java.util.concurrent.TimeUnit;
+
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -44,7 +47,7 @@ public class MessageRestControllerTest {
 
     @Test
     public void sendMail() {
-        var message = repo.insert(new Message("Test title", "this is test content", "test@gmail.com", 15));
+        repo.insert(new Message("Test title", "this is test content", "test@gmail.com", 15));
 
         SendMessagesRequest request = new SendMessagesRequest(15);
 
@@ -70,8 +73,12 @@ public class MessageRestControllerTest {
                 .statusCode(200);
     }
 
+    private void existingUser() {
+        repo.save(new Message("Test title", "this is test content", "test@gmail.com", 15));
+    }
+
     @Test
-    public void validateParams() {
+    public void sohuldThrow400IfValidationFailed() {
         given()
                 .pathParam("email", "DefinitelyNotEmail")
                 .param("pageNumber", 0)
@@ -81,7 +88,29 @@ public class MessageRestControllerTest {
                 .statusCode(400);
     }
 
-    private void existingUser() {
-        repo.save(new Message("Test title", "this is test content", "test@gmail.com", 15));
+    @Test
+    @Tag("slow")
+    public void shouldRemoveSavedMessageAfter5Minutes() {
+        SaveMessageRequest request = new SaveMessageRequest("zaleskid1@gmail.com", "asdsad", "This is email content", 15);
+
+        given()
+                .contentType(APPLICATION_JSON.toString())
+                .body(request)
+                .post("/api/v1/messages")
+                .then()
+                .statusCode(200);
+
+        var sizeBefore5Minutes = repo.count();
+        wait5Minutes();
+        var sizeAfter5Minutes = repo.count();
+        assertThat(sizeBefore5Minutes).isGreaterThan(sizeAfter5Minutes);
+    }
+
+    private void wait5Minutes() {
+        try {
+            TimeUnit.MINUTES.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
