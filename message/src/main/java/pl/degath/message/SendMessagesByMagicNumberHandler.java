@@ -1,7 +1,8 @@
-package pl.degath.message.domain;
+package pl.degath.message;
 
 import pl.degath.message.command.SendMessage;
 import pl.degath.message.command.SendMessagesByMagicNumber;
+import pl.degath.message.domain.MessageByMagicNumber;
 import pl.degath.message.infrastructure.CommandHandler;
 import pl.degath.message.port.MessageByMagicNumberRepository;
 

@@ -1,5 +1,6 @@
-package pl.degath.message.domain;
+package pl.degath.message;
 
+import pl.degath.message.domain.Message;
 import pl.degath.message.port.MessageRepository;
 
 import java.util.stream.IntStream;

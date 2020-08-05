@@ -1,8 +1,9 @@
-package pl.degath.message.domain;
+package pl.degath.message;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import pl.degath.message.command.SendMessage;
+import pl.degath.message.domain.Message;
 import pl.degath.message.infrastructure.CommandHandler;
 import pl.degath.message.port.MessageRepository;
 

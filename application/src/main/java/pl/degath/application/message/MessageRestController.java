@@ -2,15 +2,14 @@ package pl.degath.application.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.degath.application.message.request.PaginationRequest;
 import pl.degath.application.message.request.SaveMessageRequest;
 import pl.degath.application.message.request.SendMessagesRequest;
-import pl.degath.message.domain.CreateMessageHandler;
-import pl.degath.message.domain.GetMessagesByEmailHandler;
+import pl.degath.message.CreateMessageHandler;
+import pl.degath.message.GetMessagesByEmailHandler;
 import pl.degath.message.domain.MessageByEmail;
-import pl.degath.message.domain.SendMessagesByMagicNumberHandler;
+import pl.degath.message.SendMessagesByMagicNumberHandler;
 import pl.degath.message.query.GetMessagesByEmail;
 
 @RestController

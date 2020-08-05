@@ -1,9 +1,10 @@
-package pl.degath.message.domain;
+package pl.degath.message;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Slice;
-import pl.degath.message.MessageFixtures;
+import pl.degath.message.domain.Message;
+import pl.degath.message.domain.MessageByEmail;
 import pl.degath.message.port.MessageByEmailInMemory;
 import pl.degath.message.port.MessageByMagicNumberInMemory;
 import pl.degath.message.port.MessageInMemory;

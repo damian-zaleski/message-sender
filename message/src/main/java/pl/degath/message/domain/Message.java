@@ -48,7 +48,7 @@ public class Message {
     }
 
     public MessageByEmail toMessageByEmail() {
-        return new MessageByEmail(new MessageByEmailKey(this.email, this.messageId, this.magicNumber), this.title, this.content);
+        return new MessageByEmail(new MessageByEmailKey(this.email, this.messageId), this.title, this.content);
     }
 
     public MessageByMagicNumber toMessageByMagicNumber() {

@@ -1,10 +1,9 @@
 
-# recruitment-task
+# Message Sender
 - Task description can be found here: [task description](TASK.md)
 
 ## TL;DR
-1. `docker login -u zaleskirekrutacja -p Test123!123`
-2. `docker-compose up`
+1. `docker-compose up`
 
 ## Steps to run locally
 1. Run cassandra on a docker

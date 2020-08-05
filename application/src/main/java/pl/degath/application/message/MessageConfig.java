@@ -8,10 +8,13 @@ import org.springframework.data.cassandra.core.mapping.CassandraPersistentEntity
 import org.springframework.data.cassandra.repository.query.CassandraEntityInformation;
 import org.springframework.data.cassandra.repository.support.MappingCassandraEntityInformation;
 import org.springframework.mail.javamail.JavaMailSender;
+import pl.degath.message.CreateMessageHandler;
+import pl.degath.message.GetMessagesByEmailHandler;
+import pl.degath.message.SendMessageHandler;
+import pl.degath.message.SendMessagesByMagicNumberHandler;
 import pl.degath.message.domain.*;
 import pl.degath.message.port.MessageByEmailRepository;
 import pl.degath.message.port.MessageByMagicNumberRepository;
-import pl.degath.message.port.MessageRepositoryImpl;
 import pl.degath.message.port.MessageRepositoryImpl;
 
 import java.util.UUID;

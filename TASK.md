@@ -28,8 +28,3 @@
 6. Install docker locally
 7. Create Dockerfile for this App
 8. Build Docker image with App (when we run docker image, docker should start The App)
-9. Create account on Docker Hub
-10. Create private repository on Docker Hub
-11. Push docker image with App into private repository on Docker Hub
-12. Pull docker image from private repository from Dockery Hub and Run It (check that everything is working as expected)
-

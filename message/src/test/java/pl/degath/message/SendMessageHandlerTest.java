@@ -1,4 +1,4 @@
-package pl.degath.message.domain;
+package pl.degath.message;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,8 +7,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import pl.degath.message.MessageFixtures;
 import pl.degath.message.command.SendMessage;
+import pl.degath.message.domain.Message;
 import pl.degath.message.port.MessageByEmailInMemory;
 import pl.degath.message.port.MessageByMagicNumberInMemory;
 import pl.degath.message.port.MessageInMemory;

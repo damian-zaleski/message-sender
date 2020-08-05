@@ -1,4 +1,4 @@
-package pl.degath.application.message;
+package pl.degath.application.infrastructure;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

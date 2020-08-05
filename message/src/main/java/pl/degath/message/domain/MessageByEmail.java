@@ -13,6 +13,7 @@ public class MessageByEmail {
     private MessageByEmailKey key;
     private String title;
     private String content;
+    private int magicNumber;
 
     public MessageByEmail(MessageByEmailKey key, String title, String content) {
         this.key = Objects.requireNonNull(key, "Key has to be specified. Cannot be null.");
@@ -29,12 +30,8 @@ public class MessageByEmail {
         return title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public Message toMessage() {
-        return new Message(title, content, key.getEmail(), key.getMagicNumber());
+        return new Message(title, content, key.getEmail(), magicNumber);
     }
 
 }

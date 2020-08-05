@@ -1,4 +1,4 @@
-package pl.degath.message.domain;
+package pl.degath.message;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
